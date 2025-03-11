@@ -1,0 +1,170 @@
+BBDD TIENDA INFORMATICA
+---------------------------
+
+CREATE DATABASE tiendainformatica;
+
+CREATE TABLE CLIENTES (
+ ID_CLIENTE INT(11) AUTO_INCREMENT,
+ NOMBRE VARCHAR(40) NOT NULL,
+ APELLIDOS VARCHAR(40) NOT NULL,
+ NIF VARCHAR(9) NOT NULL,
+ TELEFONO VARCHAR(12) NOT NULL,
+ EMAIL VARCHAR(40),
+ DIRECCION VARCHAR(100), 
+ PRIMARY KEY(ID_CLIENTE)
+);
+
+drop table clientes;
+
+INSERT INTO CLIENTES VALUES ('ID_001','David', 'Serrano Gomez-Rey', '46959856R', '632256984', 'dasegorre@gmail.com', 'Avda. Del Oeste 25, 4C. Alcorcón 28942');
+INSERT INTO CLIENTES VALUES ('ID_002','Juan', 'Vicente Alonso', '16070359M', '616624981', 'juan.vicente1978@gmail.com', 'Avda. Del Paraiso 2, 4C. Getafe 28922');
+INSERT INTO CLIENTES VALUES ('ID_003','Pedro', 'Sanchez Martinez', '12345678A', '639518153', 'pedrete1234@hotmail.com', 'Calle Reina 1, Bajo A. Madrid 28044');
+INSERT INTO CLIENTES VALUES ('ID_004','Ana', 'Delgado Morales', '96325874B', '600500710', 'ana.delgado.morales@hotmail.com', 'Calle Villarrubia 13, 1 A. Madrid 28022');
+INSERT INTO CLIENTES VALUES ('ID_005','Jose', 'Sanchez Marin', '46859625C', '659615987', 'josanchmar123@gmail.com', 'Calle Estrella 152, 8 A. Madrid 28002');
+INSERT INTO CLIENTES VALUES ('ID_006','Roberto', 'Rodriguez Martin', '36985214D', '677856985', 'josanchmar123@gmail.com', 'Calle Estrella 152, 8 A. Madrid 28002');
+INSERT INTO CLIENTES VALUES ('ID_007','Luis', 'Olmo Perez', '25698750E', '600369852', 'luisitoelmejor@gmail.com', 'Calle Madrid 22, 1 B. Madrid 28004');
+INSERT INTO CLIENTES VALUES ('ID_008','Teresa', 'Vallejo Sierra', '98765421F', '630256984', 'teresitalamasmona@hotmail.com', 'Calle Fuenlabrada, 10 B. Leganes 28921');
+
+
+UPDATE CLIENTES
+SET 
+    nombre = LOWER(nombre),
+    apellidos = LOWER(apellidos)
+WHERE ID_CLIENTE = 'ID_001';
+
+UPDATE CLIENTES
+SET 
+    nombre = LOWER(nombre),
+    apellidos = LOWER(apellidos)
+WHERE ID_CLIENTE IN ('ID_002', 'ID_003', 'ID_004', 'ID_005', 'ID_006', 'ID_007', 'ID_008');
+
+DROP TABLE CLIENTES;
+
+
+
+CREATE TABLE PROVEEDOR (
+ ID_PROVEEDOR INT(11) AUTO_INCREMENT,
+ NOMBRE VARCHAR(40) NOT NULL,
+ CIF VARCHAR(9) NOT NULL,
+ TELEFONO VARCHAR(40) NOT NULL,
+ DIRECCION VARCHAR(100),
+ EMAIL VARCHAR(40), 
+ PRIMARY KEY(ID_PROVEEDOR)
+);
+
+INSERT INTO PROVEEDOR VALUES ('PR_001','Tech Media S.L.', 'A12345678', '916485236', 'C/ Industrias 22, Alcorcon 28942', 'info@techmedia.com');
+INSERT INTO PROVEEDOR VALUES ('PR_002','Componentes Ruiz', 'B12548796', '954654789', 'C/ Navales 122, Pol. Industrial La Bocanegra, Málaga 29001', 'info@componentesruiz.com');
+INSERT INTO PROVEEDOR VALUES ('PR_003','Pantallas Doloteo', 'A98765412', '939587410', 'C/ Enric Puyol 2, Pol. Industrial La Bienpaga, Barcelona 08022', 'info@pantallasdoloteo.com');
+INSERT INTO PROVEEDOR VALUES ('PR_004','Nvidia', 'A32145698', '965987456', 'C/ Luna 325, 28005 Madrid', 'info@nvidia.es');
+INSERT INTO PROVEEDOR VALUES ('PR_005','Intel Corp.', 'B78965412', '944321654', 'C/ Lehendakari Ardanza 258, Pol. Industrial Etorbidea, 48005 Bilbao', 'info@intel.es');
+INSERT INTO PROVEEDOR VALUES ('PR_006','LG', 'B32165478', '916412910', 'Avda De los Poblados 125, 28044 Madrid', 'info@lg.es');
+INSERT INTO PROVEEDOR VALUES ('PR_007','HP', 'A98745632', '936549870', 'Avda Del Mediterraneo 2, 28015 Madrid', 'info@hp.es');
+INSERT INTO PROVEEDOR VALUES ('PR_008','AMD', 'A65478932', '943265987', 'Avda De la Peseta 12, 28012 Madrid', 'info@amd.es');
+
+
+
+CREATE TABLE COMPRAS (
+ COD_FACTURA VARCHAR(8) NOT NULL,
+ IMPORTE VARCHAR(40) NOT NULL,
+ FECHA VARCHAR(9) NOT NULL,
+ ID_PROVEEDOR VARCHAR(7),
+ ID_EMPLEADO VARCHAR(7), 
+ PRIMARY KEY(COD_FACTURA)
+);
+
+
+CREATE TABLE VENTAS (
+ COD_FACTURA VARCHAR(8) NOT NULL,
+ IMPORTE VARCHAR(40) NOT NULL,
+ FECHA VARCHAR(9) NOT NULL,
+ ID_PROVEEDOR VARCHAR(7) NOT NULL,
+ ID_EMPLEADO VARCHAR(7) NOT NULL,
+ PRIMARY KEY(COD_FACTURA)
+);
+
+
+CREATE TABLE PRODUCTOS (
+ COD_PRODUCTO INT(7) AUTO_INCREMENT,
+ NOMBRE VARCHAR(40) NOT NULL,
+ PRECIO_COMPRA DECIMAL(5,2) NOT NULL,
+ PVP DECIMAL(5,2) NOT NULL,
+ ID_PROVEEDOR INT(11),
+ CANTIDAD INT(3), 
+ PRIMARY KEY(COD_PRODUCTO),
+ CONSTRAINT fk_proveedor FOREIGN KEY (ID_PROVEEDOR) REFERENCES PROVEEDOR(ID_PROVEEDOR) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+ ALTER TABLE PRODUCTOS
+    -> MODIFY COLUMN PVP DECIMAL(7,2) NOT NULL;
+ ALTER TABLE PRODUCTOS
+    -> MODIFY COLUMN PRECIO_COMPRA DECIMAL(7,2) NOT NULL;
+
+
+INSERT INTO PRODUCTOS VALUES ('P_001','Pantalla LED 32”', '258,36 €', '300 €', '1', '3');
+INSERT INTO PRODUCTOS VALUES ('P_002','Tarjeta GeForce RTX', '1589,00 €', '2000 €', '4', '2');
+INSERT INTO PRODUCTOS VALUES ('P_003','Portatil GeForce RTX', '3259,00 €', '4000 €', '4', '1');
+INSERT INTO PRODUCTOS VALUES ('P_004','RAM Forgeon Pro', '120,00 €', '200 €', '4', '5');
+INSERT INTO PRODUCTOS VALUES ('P_005','Intel Core i5-4,7Ghz', '133,50 €', '239,50 €', '5', '4');
+INSERT INTO PRODUCTOS VALUES ('P_006','Intel Core i7-5,6Ghz', '238,90 €', '397,50 €', '5', '2');
+INSERT INTO PRODUCTOS VALUES ('P_007','Pantalla LED 27”', '158,90 €', '200,50 €', '6', '4');
+INSERT INTO PRODUCTOS VALUES ('P_008','HP Smart Tank Plus', '110,00 €', '169,00 €', '7', '2');
+
+
+
+
+CREATE TABLE EMPLEADOS (
+ ID_EMPLEADO INT(7) AUTO_INCREMENT ,
+ NOMBRE VARCHAR(40) NOT NULL,
+ APELLIDOS VARCHAR(40) NOT NULL,
+ EMAIL VARCHAR(40), 
+ TELEFONO VARCHAR(12) NOT NULL,
+ PRIMARY KEY(ID_EMPLEADO)
+);
+
+
+
+INSERT INTO EMPLEADOS VALUES ('001','Jose Alberto', 'Munoz Grandes', 'j.alberto@equipo23.com', '630123456');
+INSERT INTO EMPLEADOS VALUES ('002','Alexander', 'Gomez Prieto', 'alexander@equipo23.com', '660300125');
+INSERT INTO EMPLEADOS VALUES ('003','David', 'Sanchez Morales', 'd.sanchez@equipo23.com', '639518524');
+INSERT INTO EMPLEADOS VALUES ('004','Vanesa', 'Diaz Rey', 'v.diaz@equipo23.com', '616625847');
+INSERT INTO EMPLEADOS VALUES ('005','Ana Isabel', 'San Juan Cruz', 'a.sanjuan@equipo23.com', '600410589');
+INSERT INTO EMPLEADOS VALUES ('006','Pedro', 'Rueda Pozuelo', 'p.rueda@equipo23.com', '677852369');
+
+ALTER TABLE empleados CHANGE COLUMN COD_EMPLEADO ID_EMPLEADO VARCHAR(7);
+
+DROP TABLE EMPLEADOS;
+
+
+ADD FOREIGN KEY (id_disciplina)
+REFERENCES disciplina(id_disciplina);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
